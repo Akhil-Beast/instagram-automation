@@ -1,0 +1,10 @@
+requests
+google-genai
+gspread
+google-auth
+python-dotenv
+schedule
+flask
+gunicorn
+google-api-python-client
+google-auth-httplib2

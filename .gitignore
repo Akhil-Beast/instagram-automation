@@ -1,0 +1,15 @@
+# Secrets & Local Config
+.env
+service_account.json
+
+# Local Videos (Stored in Google Drive for Cloud deployment)
+*Reels*/
+*.mp4
+temp_videos/
+
+# Python Cache
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
