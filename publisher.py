@@ -50,9 +50,6 @@ class Publisher:
             
             # 2. Upload video binary data directly to Meta
             print("Uploading video bytes to Instagram...")
-            with open(file_path, 'rb') as f:
-                video_data = f.read()
-                
             headers = {
                 'Authorization': f'OAuth {self.access_token}',
                 'offset': '0',
@@ -60,7 +57,9 @@ class Publisher:
                 'Content-Type': 'application/octet-stream'
             }
             
-            upload_res = requests.post(upload_uri, headers=headers, data=video_data)
+            with open(file_path, 'rb') as f:
+                upload_res = requests.post(upload_uri, headers=headers, data=f, timeout=(30, 600))
+                
             if upload_res.status_code not in (200, 201):
                 print(f"Error uploading video data: {upload_res.status_code} - {upload_res.text}")
                 return False
