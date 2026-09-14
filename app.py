@@ -24,14 +24,17 @@ def check_and_publish_post(force=False):
     Finds the scheduled video for the active time window (or next pending if force=True)
     and publishes it to Instagram.
     """
-    now = datetime.datetime.now()
-    today_str = datetime.date.today().strftime("%Y-%m-%d")
+    # Explicitly calculate India Standard Time (IST = UTC + 5:30)
+    utc_now = datetime.datetime.now(datetime.timezone.utc)
+    ist_tz = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
+    now = utc_now.astimezone(ist_tz)
+    today_str = now.strftime("%Y-%m-%d")
     current_hour = now.hour
     
     target_time = None
-    if 9 <= current_hour < 11:
+    if 9 <= current_hour < 12:
         target_time = "09:00 AM"
-    elif 23 <= current_hour <= 23:
+    elif 22 <= current_hour <= 23 or current_hour == 0:
         target_time = "11:00 PM"
         
     print(f"\n[{now.strftime('%Y-%m-%d %H:%M:%S')}] Triggering schedule check... Active slot: {target_time} (Force: {force})")
@@ -114,11 +117,14 @@ scheduler_thread.start()
 
 @app.route('/', methods=['GET'])
 def index():
+    utc_now = datetime.datetime.now(datetime.timezone.utc)
+    ist_tz = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
+    ist_now = utc_now.astimezone(ist_tz)
     return jsonify({
         "status": "online",
         "service": "Instagram Automation Bot",
         "account": "@gym147boy",
-        "server_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "ist_time": ist_now.strftime("%Y-%m-%d %H:%M:%S IST"),
         "endpoints": {
             "/": "Health check and status",
             "/trigger-post": "Check schedule and post current slot",
