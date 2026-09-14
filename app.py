@@ -134,9 +134,20 @@ def index():
 
 @app.route('/trigger-post', methods=['GET', 'POST'])
 def trigger_post():
-    force = request.args.get('force', 'false').lower() == 'true'
-    result = check_and_publish_post(force=force)
-    return jsonify(result)
+    try:
+        force = request.args.get('force', 'false').lower() == 'true'
+        result = check_and_publish_post(force=force)
+        return jsonify(result)
+    except Exception as e:
+        import traceback
+        err_msg = str(e)
+        tb = traceback.format_exc()
+        print(f"Error in trigger_post: {err_msg}\n{tb}")
+        return jsonify({
+            "success": False,
+            "error": err_msg,
+            "traceback": tb
+        }), 200
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
