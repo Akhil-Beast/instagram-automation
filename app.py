@@ -136,17 +136,19 @@ def index():
 def trigger_post():
     try:
         force = request.args.get('force', 'false').lower() == 'true'
-        result = check_and_publish_post(force=force)
-        return jsonify(result)
+        # Run publishing in a background thread so the HTTP response returns in milliseconds
+        worker = threading.Thread(target=check_and_publish_post, kwargs={'force': force}, daemon=True)
+        worker.start()
+        
+        return jsonify({
+            "success": True,
+            "message": f"Publishing task successfully initiated in background (force={force}). Video will upload to Instagram and update Google Sheet."
+        }), 200
     except Exception as e:
         import traceback
-        err_msg = str(e)
-        tb = traceback.format_exc()
-        print(f"Error in trigger_post: {err_msg}\n{tb}")
         return jsonify({
             "success": False,
-            "error": err_msg,
-            "traceback": tb
+            "error": str(e)
         }), 200
 
 if __name__ == '__main__':
