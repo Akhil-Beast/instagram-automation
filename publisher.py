@@ -95,7 +95,13 @@ class Publisher:
             pub_result = pub_r.json()
             
             if 'id' in pub_result:
-                print(f"Successfully published Reel! Post ID: {pub_result['id']}")
+                post_id = pub_result['id']
+                try:
+                    permalink_res = requests.get(f"{self.graph_url}/{post_id}?fields=permalink&access_token={self.access_token}").json()
+                    permalink = permalink_res.get('permalink', '')
+                    print(f"Successfully published Reel! Post ID: {post_id} - Permalink: {permalink}")
+                except Exception:
+                    print(f"Successfully published Reel! Post ID: {post_id}")
                 return True
             else:
                 print(f"Error publishing media: {pub_result}")

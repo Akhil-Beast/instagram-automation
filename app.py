@@ -19,9 +19,9 @@ if sys.stdout and hasattr(sys.stdout, 'reconfigure'):
 app = Flask(__name__)
 VIDEO_FOLDER = "GYM Boys Motivation Reels"
 
-def check_and_publish_post(force=False):
+def check_and_publish_post(force=False, target_video_no=None):
     """
-    Finds the scheduled video for the active time window (or next pending if force=True)
+    Finds the scheduled video for the active time window (or specific video_no / next pending if force=True)
     and publishes it to Instagram.
     """
     # Explicitly calculate India Standard Time (IST = UTC + 5:30)
@@ -32,29 +32,64 @@ def check_and_publish_post(force=False):
     current_hour = now.hour
     
     target_time = None
-    if 9 <= current_hour < 12:
+    if 8 <= current_hour < 12:
         target_time = "09:00 AM"
-    elif 22 <= current_hour <= 23 or current_hour == 0:
+    elif 21 <= current_hour <= 23 or current_hour == 0:
         target_time = "11:00 PM"
         
-    print(f"\n[{now.strftime('%Y-%m-%d %H:%M:%S')}] Triggering schedule check... Active slot: {target_time} (Force: {force})")
+    print(f"\n[{now.strftime('%Y-%m-%d %H:%M:%S IST')}] Triggering schedule check... Target slot: {target_time} (Force: {force}, Target Video: {target_video_no})")
     
     tracker = Tracker()
     publisher = Publisher()
     records = tracker.get_all_records()
     
     target_record = None
-    for record in records:
-        if record.get('Status') == 'Scheduled':
-            if force:
+    
+    # 1. Target specific video number if explicitly passed
+    if target_video_no is not None:
+        for record in records:
+            if str(record.get('Video No.')).strip() == str(target_video_no).strip():
                 target_record = record
-                break
-            if record.get('Scheduled Date') == today_str and record.get('Scheduled Time') == target_time:
-                target_record = record
+                print(f"Explicitly targeting Video No. {target_video_no}")
                 break
                 
+    # 2. Force post next pending scheduled video
+    elif force:
+        for record in records:
+            if record.get('Status') == 'Scheduled':
+                target_record = record
+                print(f"Force mode: selecting first unposted Video No. {record.get('Video No.')}")
+                break
+                
+    # 3. Regular scheduled run
+    else:
+        # First priority: Look for post specifically scheduled for this slot (today + target_time)
+        if target_time:
+            for record in records:
+                if record.get('Status') == 'Scheduled' and record.get('Scheduled Date') == today_str and record.get('Scheduled Time') == target_time:
+                    target_record = record
+                    print(f"Found scheduled post for current slot ({today_str} {target_time}): Video No. {record.get('Video No.')}")
+                    break
+        
+        # Second priority: If no exact slot match, check if there is an overdue scheduled post (Scheduled Date + Time <= now)
+        # This guarantees any missed post (e.g. from network glitches) is automatically recovered on the next trigger!
+        if not target_record:
+            for record in records:
+                if record.get('Status') == 'Scheduled':
+                    rec_date = str(record.get('Scheduled Date', '')).strip()
+                    rec_time = str(record.get('Scheduled Time', '')).strip()
+                    try:
+                        rec_dt_str = f"{rec_date} {rec_time}"
+                        rec_dt = datetime.datetime.strptime(rec_dt_str, "%Y-%m-%d %I:%M %p").replace(tzinfo=ist_tz)
+                        if rec_dt <= now:
+                            target_record = record
+                            print(f"Recovering overdue scheduled post: Video No. {record.get('Video No.')} ({rec_dt_str})")
+                            break
+                    except Exception:
+                        pass
+                 
     if not target_record:
-        msg = f"No pending scheduled posts found for slot: {today_str} {target_time}"
+        msg = f"No pending scheduled posts found to publish at this time."
         print(msg)
         return {"success": False, "message": msg}
         
@@ -64,7 +99,7 @@ def check_and_publish_post(force=False):
     hashtags = str(target_record.get('Hashtags', ''))
     full_caption = f"{caption}\n.\n.\n{hashtags}"
     
-    print(f"Targeting Video No. {video_no}: {file_name}")
+    print(f"Processing Video No. {video_no}: {file_name}")
     
     # 1. Look for video locally
     local_path = os.path.join(VIDEO_FOLDER, file_name)
@@ -127,29 +162,36 @@ def index():
         "ist_time": ist_now.strftime("%Y-%m-%d %H:%M:%S IST"),
         "endpoints": {
             "/": "Health check and status",
-            "/trigger-post": "Check schedule and post current slot",
+            "/ping": "Lightweight 2-byte keep-alive ping (prevents Render from sleeping)",
+            "/trigger-post": "Check schedule and post current or overdue slot",
+            "/trigger-post?video_no=X": "Post specific video number immediately",
             "/trigger-post?force=true": "Force post the next scheduled video immediately"
         }
     })
+
+@app.route('/ping', methods=['GET'])
+def ping():
+    """Ultra-lightweight keep-alive ping for cron-job.org to keep Render active 24/7"""
+    return "OK", 200, {'Content-Type': 'text/plain'}
 
 @app.route('/trigger-post', methods=['GET', 'POST'])
 def trigger_post():
     try:
         force = request.args.get('force', 'false').lower() == 'true'
-        # Run publishing in a background thread so the HTTP response returns in milliseconds
-        worker = threading.Thread(target=check_and_publish_post, kwargs={'force': force}, daemon=True)
+        video_no = request.args.get('video_no')
+        
+        # Run publishing in a background thread so the HTTP response returns immediately (<20ms)
+        worker = threading.Thread(
+            target=check_and_publish_post,
+            kwargs={'force': force, 'target_video_no': video_no},
+            daemon=True
+        )
         worker.start()
         
-        return jsonify({
-            "success": True,
-            "message": f"Publishing task successfully initiated in background (force={force}). Video will upload to Instagram and update Google Sheet."
-        }), 200
+        # Return tiny plain text "OK" so cron-job.org NEVER hits "Failed (output too large)"
+        return "OK", 200, {'Content-Type': 'text/plain'}
     except Exception as e:
-        import traceback
-        return jsonify({
-            "success": False,
-            "error": str(e)
-        }), 200
+        return f"Error: {e}", 500, {'Content-Type': 'text/plain'}
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 10000))
