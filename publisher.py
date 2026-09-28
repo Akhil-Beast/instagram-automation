@@ -5,6 +5,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+class PublishResult(dict):
+    """
+    Dict subclass that evaluates truthy if success is True,
+    allowing both 'if result:' and 'result.get("post_id")'.
+    """
+    def __bool__(self):
+        return bool(self.get('success', False))
+
 class Publisher:
     def __init__(self):
         self.access_token = os.getenv("ACCESS_TOKEN")
@@ -18,11 +26,11 @@ class Publisher:
         """
         if not self.access_token or not self.instagram_account_id:
             print("Missing Instagram API credentials.")
-            return False
+            return PublishResult(success=False, error="Missing Instagram API credentials.")
             
         if not os.path.exists(file_path):
             print(f"Error: Video file not found at {file_path}")
-            return False
+            return PublishResult(success=False, error=f"Video file not found at {file_path}")
 
         file_size = os.path.getsize(file_path)
         print(f"Starting direct upload for: {file_path} ({file_size / (1024*1024):.2f} MB)")
@@ -42,7 +50,7 @@ class Publisher:
             
             if 'id' not in init_res or 'uri' not in init_res:
                 print(f"Error initializing upload session: {init_res}")
-                return False
+                return PublishResult(success=False, error=f"Session initialization failed: {init_res}")
                 
             creation_id = init_res['id']
             upload_uri = init_res['uri']
@@ -61,8 +69,9 @@ class Publisher:
                 upload_res = requests.post(upload_uri, headers=headers, data=f, timeout=(30, 600))
                 
             if upload_res.status_code not in (200, 201):
-                print(f"Error uploading video data: {upload_res.status_code} - {upload_res.text}")
-                return False
+                err_msg = f"Error uploading video data: {upload_res.status_code} - {upload_res.text}"
+                print(err_msg)
+                return PublishResult(success=False, error=err_msg)
                 
             print("Video data successfully uploaded. Waiting for Meta to finish processing...")
             
@@ -79,10 +88,10 @@ class Publisher:
                     break
                 elif status_code == 'ERROR':
                     print(f"Processing failed on Meta servers: {status_res}")
-                    return False
+                    return PublishResult(success=False, error=f"Meta processing failed: {status_res}")
             else:
                 print("Timed out waiting for video processing.")
-                return False
+                return PublishResult(success=False, error="Timed out waiting for video processing on Meta servers.")
                 
             # 4. Publish the Reel
             publish_url = f"{self.graph_url}/{self.instagram_account_id}/media_publish"
@@ -96,17 +105,19 @@ class Publisher:
             
             if 'id' in pub_result:
                 post_id = pub_result['id']
+                permalink = ""
                 try:
                     permalink_res = requests.get(f"{self.graph_url}/{post_id}?fields=permalink&access_token={self.access_token}").json()
                     permalink = permalink_res.get('permalink', '')
                     print(f"Successfully published Reel! Post ID: {post_id} - Permalink: {permalink}")
                 except Exception:
                     print(f"Successfully published Reel! Post ID: {post_id}")
-                return True
+                return PublishResult(success=True, post_id=post_id, permalink=permalink)
             else:
                 print(f"Error publishing media: {pub_result}")
-                return False
+                return PublishResult(success=False, error=f"Publish failed: {pub_result}")
                 
         except Exception as e:
             print(f"Exception during publishing: {e}")
-            return False
+            return PublishResult(success=False, error=str(e))
+

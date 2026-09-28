@@ -9,6 +9,8 @@ import schedule
 from tracker import Tracker
 from publisher import Publisher
 from drive_downloader import download_video_from_drive
+from affiliate_manager import AffiliateManager
+from video_composer import prepare_composite_reel
 
 load_dotenv()
 
@@ -21,8 +23,8 @@ VIDEO_FOLDER = "GYM Boys Motivation Reels"
 
 def check_and_publish_post(force=False, target_video_no=None):
     """
-    Finds the scheduled video for the active time window (or specific video_no / next pending if force=True)
-    and publishes it to Instagram.
+    Finds the scheduled video for the active time window (or specific video_no / next pending if force=True),
+    matches an Amazon affiliate product, composes a product card Reel, and publishes to Instagram.
     """
     # Explicitly calculate India Standard Time (IST = UTC + 5:30)
     utc_now = datetime.datetime.now(datetime.timezone.utc)
@@ -72,7 +74,6 @@ def check_and_publish_post(force=False, target_video_no=None):
                     break
         
         # Second priority: If no exact slot match, check if there is an overdue scheduled post (Scheduled Date + Time <= now)
-        # This guarantees any missed post (e.g. from network glitches) is automatically recovered on the next trigger!
         if not target_record:
             for record in records:
                 if record.get('Status') == 'Scheduled':
@@ -97,9 +98,9 @@ def check_and_publish_post(force=False, target_video_no=None):
     file_name = str(target_record.get('File Name', '')).strip()
     caption = str(target_record.get('Caption', ''))
     hashtags = str(target_record.get('Hashtags', ''))
-    full_caption = f"{caption}\n.\n.\n{hashtags}"
+    topic = str(target_record.get('Topic', ''))
     
-    print(f"Processing Video No. {video_no}: {file_name}")
+    print(f"Processing Video No. {video_no}: {file_name} (Topic: '{topic}')")
     
     # 1. Look for video locally
     local_path = os.path.join(VIDEO_FOLDER, file_name)
@@ -114,27 +115,92 @@ def check_and_publish_post(force=False, target_video_no=None):
         print(f"Local file not found. Attempting download from Google Drive...")
         downloaded = download_video_from_drive(file_name, local_path)
         if not downloaded:
-            tracker.update_status(video_no, "Failed (Video Not Found)")
+            tracker.update_row_fields(video_no, {"Status": "Failed (Video Not Found)", "Error": "Drive download failed"})
             return {"success": False, "message": f"Video '{file_name}' not found locally or on Google Drive."}
         temp_downloaded = True
 
+    # 3. Intelligent Amazon Affiliate Product Selection & Video Composition
+    affiliate_mgr = AffiliateManager()
+    recent_products = tracker.get_recent_promoted_products(limit=5)
+    matched_product = affiliate_mgr.select_product(
+        topic=topic,
+        caption=caption,
+        recent_product_ids=recent_products
+    )
+
+    publish_path = local_path
+    final_caption = f"{caption}\n.\n.\n{hashtags}"
+    composite_video_path = None
+
+    if matched_product:
+        print(f"Matched product: {matched_product.get('name')} (ASIN: {matched_product.get('asin')})")
+        tracker.update_row_fields(video_no, {
+            "Status": "Product Selected",
+            "Product Name": matched_product.get("name", ""),
+            "Product ASIN": matched_product.get("asin", ""),
+            "Product Category": matched_product.get("category", ""),
+            "Product Price": matched_product.get("price", ""),
+            "Amazon URL": matched_product.get("amazon_url", ""),
+            "Affiliate URL": matched_product.get("affiliate_url", "")
+        })
+
+        print("Generating composite Reel with product motion card...")
+        temp_out_dir = os.path.dirname(local_path)
+        comp_path, was_combined = prepare_composite_reel(local_path, matched_product, output_dir=temp_out_dir)
+        
+        if was_combined:
+            composite_video_path = comp_path
+            publish_path = comp_path
+            tracker.update_status(video_no, "Video Combined")
+            final_caption = affiliate_mgr.generate_affiliate_caption(caption, matched_product, hashtags)
+            print("Successfully combined gym video with affiliate product card!")
+        else:
+            print("Video combination failed. Falling back cleanly to original gym video.")
+    else:
+        print("No high-relevance affiliate product found for this video. Publishing original gym video.")
+
+    # 4. Direct Upload & Publication to Instagram Reels
     try:
         print(f"Publishing Video No. {video_no} to Instagram...")
-        success = publisher.publish_video(local_path, full_caption)
-        if success:
-            tracker.update_status(video_no, "Posted")
-            return {"success": True, "message": f"Successfully posted Video No. {video_no} ({file_name}) to Instagram!"}
+        result = publisher.publish_video(publish_path, final_caption)
+        if result.get("success"):
+            post_id = result.get("post_id", "")
+            permalink = result.get("permalink", "")
+            tracker.update_row_fields(video_no, {
+                "Status": "Published",
+                "Instagram Reel ID": post_id,
+                "Instagram URL": permalink,
+                "Error": ""
+            })
+            return {
+                "success": True,
+                "message": f"Successfully published Video No. {video_no} ({file_name}) to Instagram!",
+                "permalink": permalink,
+                "product": matched_product.get("name") if matched_product else "None"
+            }
         else:
-            tracker.update_status(video_no, "Failed")
-            return {"success": False, "message": f"Publishing failed for Video No. {video_no}."}
+            err = result.get("error", "Publish failed")
+            tracker.update_row_fields(video_no, {
+                "Status": "Failed",
+                "Error": err
+            })
+            return {"success": False, "message": f"Publishing failed for Video No. {video_no}: {err}"}
     finally:
         # Clean up temporary downloaded file to save disk space
         if temp_downloaded and os.path.exists(local_path):
             try:
                 os.remove(local_path)
-                print("Cleaned up temporary video file.")
+                print(f"Cleaned up temporary downloaded video: {local_path}")
             except Exception:
                 pass
+        # Clean up composite video file if created
+        if composite_video_path and os.path.exists(composite_video_path):
+            try:
+                os.remove(composite_video_path)
+                print(f"Cleaned up temporary composite video: {composite_video_path}")
+            except Exception:
+                pass
+
 
 def background_scheduler_worker():
     """Background thread running schedule loop"""
@@ -157,7 +223,7 @@ def index():
     ist_now = utc_now.astimezone(ist_tz)
     return jsonify({
         "status": "online",
-        "service": "Instagram Automation Bot",
+        "service": "Instagram Automation Bot (Amazon Affiliate Integrated)",
         "account": "@gym147boy",
         "ist_time": ist_now.strftime("%Y-%m-%d %H:%M:%S IST"),
         "endpoints": {
