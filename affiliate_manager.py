@@ -9,7 +9,8 @@ CATALOG_PATH = os.path.join(os.path.dirname(__file__), "affiliate_products.json"
 
 class AffiliateManager:
     def __init__(self, catalog_path=CATALOG_PATH):
-        self.associate_tag = os.getenv("AMAZON_ASSOCIATE_TAG", "gym147boy-21")
+        self.associate_tag = os.getenv("AMAZON_ASSOCIATE_TAG", "akhilfinds01-21")
+        self.marketplace = os.getenv("AMAZON_MARKETPLACE", "amazon.in")
         self.catalog_path = catalog_path
         self.products = self._load_catalog()
 
@@ -25,10 +26,17 @@ class AffiliateManager:
             return []
 
     def get_affiliate_url(self, product):
-        """Generates compliant Amazon Associates tracking link"""
+        """Generates compliant Amazon Associates tracking link for the active marketplace"""
         base_url = product.get("amazon_url", "").strip()
         if not base_url:
-            return ""
+            asin = product.get("asin", "")
+            if asin:
+                base_url = f"https://www.{self.marketplace}/dp/{asin}"
+            else:
+                return ""
+        # Ensure marketplace consistency if configured
+        if self.marketplace and "amazon." in base_url:
+            base_url = re.sub(r'https?://(?:www\.)?amazon\.[a-z.]+', f'https://www.{self.marketplace}', base_url)
         sep = "&" if "?" in base_url else "?"
         return f"{base_url}{sep}tag={self.associate_tag}"
 
