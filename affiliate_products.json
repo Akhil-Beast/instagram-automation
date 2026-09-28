@@ -1,226 +1,162 @@
 [
   {
+    "id": "arm_blaster_bicep_isolator",
+    "name": "Aprodo Neoprene Padded Heavy Duty Aluminum Arm Blaster",
+    "category": "Equipment",
+    "keywords": ["bicep", "biceps", "curls", "arm", "arms", "peak", "hypertrophy", "spider", "preacher", "concentration", "gunshow"],
+    "asin": "B07T7WWM1H",
+    "amazon_url": "https://www.amazon.in/dp/B07T7WWM1H",
+    "price": "₹1,229",
+    "features": [
+      "Heavy-Gauge Contoured Rigid Aluminum Plate",
+      "Thick Neoprene Neck & Elbow Foam Padding",
+      "Locks Elbows in Place for Maximum Bicep Peak Isolation"
+    ],
+    "cta": "Tap the link in bio to lock in strict bicep isolation! 🔗",
+    "badge": "💪 BICEP PEAK ISOLATION"
+  },
+  {
     "id": "lifting_straps_heavy_duty",
-    "name": "Heavy Duty Neoprene Padded Weightlifting Straps",
+    "name": "Boldfit Heavy Duty Neoprene Padded Weight Lifting Straps",
     "category": "Gear & Wraps",
     "keywords": ["back", "deadlift", "deadlifts", "rows", "pulldowns", "pull-ups", "lat", "traps", "shrugs", "pull", "tbar", "kroc", "grip", "forearms"],
-    "asin": "B00K5F2YJ0",
-    "amazon_url": "https://www.amazon.in/dp/B00K5F2YJ0",
-    "price": "₹699",
+    "asin": "B0FWKTHRL8",
+    "amazon_url": "https://www.amazon.in/dp/B0FWKTHRL8",
+    "price": "₹599",
     "features": [
-      "Thick 5mm Neoprene Wrist Padding",
-      "Reinforced Double-Stitched Heavy Cotton Webbing",
-      "Increases Grip Capacity for Maximum Pulling Power"
+      "Thick 5mm Neoprene Wrist Cushioning",
+      "Non-Slip Reinforced Cotton Webbing with Grip Texture",
+      "Eliminates Grip Fatigue on Heavy Pull Days"
     ],
     "cta": "Tap the link in bio to upgrade your back day grip! 🔗",
     "badge": "⚡ ESSENTIAL PULL DAY GEAR"
   },
   {
     "id": "wrist_wraps_heavy_duty",
-    "name": "Heavy Duty 18\" Thumb Loop Wrist Wraps",
+    "name": "Boldfit Heavy Duty Thumb Loop Wrist Support Wraps",
     "category": "Gear & Wraps",
     "keywords": ["bench", "chest", "press", "incline", "overhead", "military", "push", "shoulders", "dips", "pecs", "dumbbells", "pushup"],
-    "asin": "B0108A4D62",
-    "amazon_url": "https://www.amazon.in/dp/B0108A4D62",
-    "price": "₹799",
+    "asin": "B08WLWGKY2",
+    "amazon_url": "https://www.amazon.in/dp/B08WLWGKY2",
+    "price": "₹198",
     "features": [
-      "Rigid Competition-Grade Elastic Weave",
-      "Heavy-Duty Reinforced Thumb Loop & Secure Fastener",
-      "Maximum Wrist Joint Stabilization on Heavy Presses"
+      "Heavy Elastic Blend for Optimal Wrist Stabilization",
+      "Reinforced Elastic Thumb Loop & Extra-Wide Velcro",
+      "Protects Wrist Joint from Hyperextension on Heavy Presses"
     ],
     "cta": "Check the link in bio to lock in your pressing power! 🔗",
     "badge": "🛡️ PUSH DAY JOINT SUPPORT"
   },
   {
     "id": "knee_sleeves_7mm",
-    "name": "7mm Neoprene Knee Compression Sleeves",
+    "name": "Boldfit High Compression Knee Support Sleeves (Pair)",
     "category": "Gear & Wraps",
     "keywords": ["squat", "squats", "leg", "legs", "quads", "hack", "lunges", "knee", "legpress", "calves", "hamstring", "lowerbody"],
-    "asin": "B00SWK3F48",
-    "amazon_url": "https://www.amazon.in/dp/B00SWK3F48",
-    "price": "₹1,899",
+    "asin": "B0B2KGKQXL",
+    "amazon_url": "https://www.amazon.in/dp/B0B2KGKQXL",
+    "price": "₹649",
     "features": [
-      "High-Density 7mm SCR Neoprene Construction",
-      "Optimized Joint Warmth & Patellar Compression",
-      "Rebound Assistance at the Bottom of Deep Squats"
+      "Anatomical 3D Compression Weave with Patella Stabilization",
+      "Keeps Knee Joints Warm & Lubricated During Deep Squats",
+      "Reduces Joint Pressure on Heavy Leg Day Sets"
     ],
     "cta": "Hit the link in bio to protect your knees and squat heavier! 🔗",
     "badge": "🏋️‍♂️ HEAVY LEG DAY ESSENTIAL"
   },
   {
     "id": "lever_lifting_belt_10mm",
-    "name": "10mm Leather Powerlifting Belt with Quick Lever",
+    "name": "BEASTOX Premium 10mm Leather Powerlifting Lever Belt",
     "category": "Equipment",
     "keywords": ["squat", "deadlift", "heavy", "powerlifting", "pr", "strength", "overload", "core", "spine", "raw", "max", "compound"],
-    "asin": "B0797DXL24",
-    "amazon_url": "https://www.amazon.in/dp/B0797DXL24",
-    "price": "₹2,999",
+    "asin": "B0G4RF1PDN",
+    "amazon_url": "https://www.amazon.in/dp/B0G4RF1PDN",
+    "price": "₹4,699",
     "features": [
-      "Genuine 10mm Thick Solid Leather Core",
-      "Heavy-Duty Quick-Lock Steel Lever Mechanism",
-      "Maximum Intra-Abdominal Pressure & Spinal Bracing"
+      "Genuine 10mm Multi-Layer Treated Leather Core",
+      "Heavy Duty Quick-Flick Steel Lever Buckle",
+      "Maximum Intra-Abdominal Pressure for Core & Spinal Safety"
     ],
     "cta": "Grab the link in bio for maximum spine bracing and PRs! 🔗",
     "badge": "🏆 POWERBUILDER STANDARD"
   },
   {
-    "id": "arm_blaster_bicep_isolator",
-    "name": "Heavy Aluminum Arm Blaster Bicep Isolator",
-    "category": "Equipment",
-    "keywords": ["bicep", "biceps", "curls", "arm", "arms", "peak", "hypertrophy", "spider", "preacher", "concentration", "gunshow"],
-    "asin": "B0170A584W",
-    "amazon_url": "https://www.amazon.in/dp/B0170A584W",
-    "price": "₹1,499",
-    "features": [
-      "Heavy-Gauge Contoured Rigid Aluminum Plate",
-      "Ergonomic Neoprene Neck Padding & Elbow Grips",
-      "Eliminates Shoulder Momentum for Strict Bicep Peaks"
-    ],
-    "cta": "Tap the link in bio to lock in strict bicep isolation! 🔗",
-    "badge": "💪 BICEP PEAK ISOLATION"
-  },
-  {
-    "id": "fat_gripz_thick_bar",
-    "name": "Thick Bar Rubber Grips for Forearm & Bicep Mass",
-    "category": "Gear & Wraps",
-    "keywords": ["forearms", "grip", "bicep", "arm", "arms", "curls", "pullups", "barbell", "dumbbells", "thickness", "vascularity"],
-    "asin": "B005FIS14Y",
-    "amazon_url": "https://www.amazon.in/dp/B005FIS14Y",
-    "price": "₹899",
-    "features": [
-      "Converts Any Standard Barbell or DB into a Thick Bar",
-      "High-Density Military Grade Polymer Construction",
-      "Dramatically Increases Forearm & Bicep Motor Recruitment"
-    ],
-    "cta": "Check the link in bio to build thick, powerful forearms! 🔗",
-    "badge": "⚡ ARMS & GRIP MULTIPLIER"
-  },
-  {
     "id": "creatine_monohydrate_micronized",
-    "name": "100% Pure Micronized Creatine Monohydrate (5g per serving)",
+    "name": "Nutrabay Pure Micronised Creatine Monohydrate (100g/250g)",
     "category": "Supplements",
     "keywords": ["strength", "power", "energy", "recovery", "supplement", "hypertrophy", "muscle", "daily", "workout", "discipline", "gains", "growth"],
-    "asin": "B002DYIZEO",
-    "amazon_url": "https://www.amazon.in/dp/B002DYIZEO",
-    "price": "₹1,099",
+    "asin": "B09VP6HL5J",
+    "amazon_url": "https://www.amazon.in/dp/B09VP6HL5J",
+    "price": "₹499",
     "features": [
-      "100% Pure Creapure Micronized Creatine Powder",
-      "Enhances ATP Cellular Energy Regeneration for Heavy Sets",
-      "Zero Sugar, Zero Fillers, Completely Unflavored"
+      "100% Pure Ultra-Micronized Creatine Powder",
+      "Replenishes Phosphocreatine Stores for Maximum Explosive Strength",
+      "Zero Fillers, Zero Added Sugar, Completely Unflavored"
     ],
     "cta": "Hit the link in bio to fuel your daily strength and recovery! 🔗",
     "badge": "🔥 EVIDENCE-BASED GAINS"
   },
   {
-    "id": "whey_protein_isolate_powder",
-    "name": "100% Whey Protein Isolate (25g Protein, Ultra-Pure)",
-    "category": "Supplements",
-    "keywords": ["protein", "nutrition", "postworkout", "recovery", "diet", "lean", "muscle", "shredded", "building", "growth", "gains"],
-    "asin": "B000GISU1M",
-    "amazon_url": "https://www.amazon.in/dp/B000GISU1M",
-    "price": "₹3,299",
-    "features": [
-      "25 Grams of Ultra-Filtered Micro-Fraction Whey Isolate",
-      "5.5g Natural BCAAs per Scoop for Rapid Protein Synthesis",
-      "Less Than 1g Fat and Low Carbs for Lean Muscle Support"
-    ],
-    "cta": "Tap the link in bio to fuel clean, lean post-workout recovery! 🔗",
-    "badge": "🥛 PREMIUM POST-WORKOUT FUEL"
-  },
-  {
     "id": "stainless_steel_shaker_bottle",
-    "name": "24oz Insulated Stainless Steel Protein Shaker Bottle",
+    "name": "Boldfit Gym Shaker Pro Cyclone Shaker Bottle (500ml)",
     "category": "Accessories",
     "keywords": ["shaker", "bottle", "protein", "supplements", "hydration", "water", "gym", "workout", "accessories", "gear"],
-    "asin": "B0797P69G9",
-    "amazon_url": "https://www.amazon.in/dp/B0797P69G9",
-    "price": "₹999",
+    "asin": "B0BBS248FD",
+    "amazon_url": "https://www.amazon.in/dp/B0BBS248FD",
+    "price": "₹379",
     "features": [
-      "Double-Wall Vacuum Insulated Stainless Steel",
-      "Keeps Protein Shakes Cold for up to 24 Hours",
-      "Odor-Resistant, BPA-Free, 100% Leak-Proof Seal"
+      "Cyclone Whisk Technology for 100% Lump-Free Shakes",
+      "BPA-Free, Leak-Proof Flip Cap Design",
+      "Built-In Storage Compartment for Powders & Pills"
     ],
-    "cta": "Check the link in bio for the ultimate odor-free shaker! 🔗",
-    "badge": "🧊 ICE-COLD HYDRATION"
+    "cta": "Check the link in bio for the ultimate lump-free gym shaker! 🔗",
+    "badge": "🧊 100% LEAK-PROOF SHAKER"
   },
   {
     "id": "liquid_chalk_gym",
-    "name": "Long-Lasting Fast-Drying Liquid Gym Chalk",
+    "name": "DemiGrip Liquid Gym Chalk (300ml) for Deadlifts & Pulls",
     "category": "Accessories",
     "keywords": ["chalk", "grip", "deadlift", "pullups", "climbing", "calisthenics", "heavy", "sweat", "hands", "barbell"],
-    "asin": "B075253T6M",
-    "amazon_url": "https://www.amazon.in/dp/B075253T6M",
-    "price": "₹499",
+    "asin": "B0HG1QJK4Z",
+    "amazon_url": "https://www.amazon.in/dp/B0HG1QJK4Z",
+    "price": "₹369",
     "features": [
-      "Dries Within Seconds into a Sweat-Resistant Grip Layer",
-      "Dust-Free Formula Allowed in All Commercial Gyms",
-      "Zero Mess, Ultra-Secure Hold on All Iron Knurling"
+      "Dries Within 10 Seconds into a Sweat-Proof Grip Layer",
+      "Dust-Free Formula - Permitted in All Commercial Gyms",
+      "Prevents Bar Slippage on Max Effort Deadlifts & Pull-ups"
     ],
     "cta": "Tap the link in bio to lock in a slip-free iron grip! 🔗",
     "badge": "🗜️ ANTI-SLIP CHALK FORMULA"
   },
   {
-    "id": "ab_roller_wheel_dual",
-    "name": "Wide Dual-Wheel Ab Roller with Padded Knee Mat",
-    "category": "Equipment",
-    "keywords": ["core", "abs", "absworkout", "sixpack", "obliques", "rollout", "plank", "dragon", "stability", "functional"],
-    "asin": "B00ZAPATHM",
-    "amazon_url": "https://www.amazon.in/dp/B00ZAPATHM",
-    "price": "₹849",
-    "features": [
-      "Extra-Wide Wheel Tread for Superior Lateral Stability",
-      "Ergonomic Non-Slip Rubber Grip Handles",
-      "Includes High-Density Foam Knee Pad for Joint Comfort"
-    ],
-    "cta": "Hit the link in bio to build deep, shredded abdominal strength! 🔗",
-    "badge": "🎯 BULLETPROOF CORE BUILDER"
-  },
-  {
     "id": "resistance_bands_loop_set",
-    "name": "Heavy Duty Loop Resistance Bands Set (5-Pack)",
+    "name": "Fashnex Exercise Resistance Loop Bands Set for Gym",
     "category": "Equipment",
     "keywords": ["bands", "warmup", "mobility", "stretch", "shoulders", "rotator", "rehab", "calisthenics", "assisted", "glutes", "recovery"],
-    "asin": "B07226MZZP",
-    "amazon_url": "https://www.amazon.in/dp/B07226MZZP",
-    "price": "₹699",
+    "asin": "B09G9SZYST",
+    "amazon_url": "https://www.amazon.in/dp/B09G9SZYST",
+    "price": "₹348",
     "features": [
-      "100% Natural Layered Latex for Tear-Proof Durability",
-      "Resistance Levels from 15 lbs up to 125 lbs",
-      "Ideal for Pull-Up Assistance, Warmups, and Joint Priming"
+      "100% Natural Latex Multi-Layer Tear-Resistant Material",
+      "Multiple Resistance Levels for Warm-Ups and Mobility",
+      "Perfect for Rotator Cuff Activation and Glute Priming"
     ],
     "cta": "Check the link in bio for the ultimate versatile workout bands! 🔗",
     "badge": "🛡️ WARMUP & MOBILITY GEAR"
   },
   {
-    "id": "deep_tissue_massage_gun",
-    "name": "Deep Tissue Percussion Muscle Massage Gun",
-    "category": "Accessories",
-    "keywords": ["recovery", "massage", "soreness", "therapy", "mobility", "doms", "rest", "postworkout", "tissue", "stiffness"],
-    "asin": "B089K8RNX8",
-    "amazon_url": "https://www.amazon.in/dp/B089K8RNX8",
-    "price": "₹2,499",
+    "id": "hand_grip_strengthener",
+    "name": "Boldfit Adjustable Heavy Hand Grip Strengthener with Counter",
+    "category": "Gear & Wraps",
+    "keywords": ["forearms", "grip", "bicep", "arm", "arms", "curls", "pullups", "barbell", "dumbbells", "thickness", "vascularity", "hands"],
+    "asin": "B0BR3LQ4TT",
+    "amazon_url": "https://www.amazon.in/dp/B0BR3LQ4TT",
+    "price": "₹279",
     "features": [
-      "High-Torque Brushless Motor with 30 Speed Levels",
-      "12mm Amplitude for Deep Myofascial Tissue Relief",
-      "Includes 6 Specialized Interchangeable Massage Heads"
+      "Adjustable Resistance from 10kg up to 60kg",
+      "Built-In Mechanical Repetition Counter",
+      "Develops Crushing Grip Power and Forearm Veins"
     ],
-    "cta": "Tap the link in bio to destroy muscle soreness and recover faster! 🔗",
-    "badge": "⚡ RAPID SORENESS RECOVERY"
-  },
-  {
-    "id": "tactical_gym_backpack_45l",
-    "name": "45L Military Tactical Gym & Workout Backpack",
-    "category": "Accessories",
-    "keywords": ["bag", "backpack", "gymbag", "lifestyle", "travel", "shoes", "shaker", "accessories", "straps", "essentials"],
-    "asin": "B08FJ7W32H",
-    "amazon_url": "https://www.amazon.in/dp/B08FJ7W32H",
-    "price": "₹1,999",
-    "features": [
-      "Water-Resistant 900D Heavy-Duty Oxford Fabric",
-      "Dual Dedicated Bottle Holders & Separate Shoe Compartment",
-      "MOLLE Webbing Straps for Shakers, Belts, and Grips"
-    ],
-    "cta": "Check the link in bio to organize all your gym gear in one bag! 🔗",
-    "badge": "🎒 ALL-IN-ONE GYM CARRIER"
+    "cta": "Check the link in bio to build thick, powerful forearms! 🔗",
+    "badge": "⚡ ARMS & GRIP MULTIPLIER"
   }
 ]
