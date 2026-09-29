@@ -18,3 +18,6 @@ test_card.py
 run_post.bat
 scratch/
 temp_card.png
+
+.vercel
+.env*

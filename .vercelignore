@@ -1,0 +1,26 @@
+# Videos & Media
+*Reels*/
+temp_videos/
+*.mp4
+*.png
+*.jpg
+temp_card.png
+
+# Secrets & Local Config
+.env*
+service_account.json
+
+# Python Automation (Runs 24/7 on Render)
+*.py
+requirements.txt
+Procfile
+run_post.bat
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+
+# Scratch & Logs
+scratch/
+*.log
