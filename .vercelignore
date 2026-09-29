@@ -1,9 +1,7 @@
-# Videos & Media
+# Videos & Large Media
 *Reels*/
 temp_videos/
 *.mp4
-*.png
-*.jpg
 temp_card.png
 
 # Secrets & Local Config

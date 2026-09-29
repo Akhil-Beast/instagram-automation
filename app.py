@@ -4,7 +4,7 @@ import threading
 import time
 import datetime
 import json
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request, render_template, send_from_directory
 from dotenv import load_dotenv
 import schedule
 from tracker import Tracker
@@ -261,6 +261,16 @@ def store():
         return render_template('store.html', products=products)
     except Exception as e:
         return f"Error loading storefront: {e}", 500
+
+@app.route('/favicon.ico')
+@app.route('/favicon.svg')
+@app.route('/apple-touch-icon.png')
+@app.route('/icon-192.png')
+@app.route('/icon-512.png')
+@app.route('/icon.png')
+def serve_brand_icons():
+    filename = request.path.lstrip('/')
+    return send_from_directory(os.path.dirname(__file__), filename)
 
 @app.route('/ping', methods=['GET'])
 def ping():
