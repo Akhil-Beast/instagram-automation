@@ -3,7 +3,8 @@ import sys
 import threading
 import time
 import datetime
-from flask import Flask, jsonify, request
+import json
+from flask import Flask, jsonify, request, render_template
 from dotenv import load_dotenv
 import schedule
 from tracker import Tracker
@@ -223,6 +224,10 @@ scheduler_thread.start()
 
 @app.route('/', methods=['GET'])
 def index():
+    # If accessed by a browser, serve the storefront directly for the Instagram bio link
+    if request.accept_mimetypes.accept_html and not request.accept_mimetypes.accept_json:
+        return store()
+
     utc_now = datetime.datetime.now(datetime.timezone.utc)
     ist_tz = datetime.timezone(datetime.timedelta(hours=5, minutes=30))
     ist_now = utc_now.astimezone(ist_tz)
@@ -232,13 +237,30 @@ def index():
         "account": "@gym147boy",
         "ist_time": ist_now.strftime("%Y-%m-%d %H:%M:%S IST"),
         "endpoints": {
-            "/": "Health check and status",
+            "/": "Official Storefront (Browser) or Health Status (API)",
+            "/store": "Official Amazon Affiliate Storefront",
+            "/shop": "Official Amazon Affiliate Storefront (Alias)",
             "/ping": "Lightweight 2-byte keep-alive ping (prevents Render from sleeping)",
             "/trigger-post": "Check schedule and post current or overdue slot",
             "/trigger-post?video_no=X": "Post specific video number immediately",
             "/trigger-post?force=true": "Force post the next scheduled video immediately"
         }
     })
+
+@app.route('/store', methods=['GET'])
+@app.route('/shop', methods=['GET'])
+def store():
+    """Serves the responsive official Amazon Affiliate storefront for @gym147boy bio"""
+    try:
+        catalog_path = os.path.join(os.path.dirname(__file__), 'affiliate_products.json')
+        if os.path.exists(catalog_path):
+            with open(catalog_path, 'r', encoding='utf-8') as f:
+                products = json.load(f)
+        else:
+            products = []
+        return render_template('store.html', products=products)
+    except Exception as e:
+        return f"Error loading storefront: {e}", 500
 
 @app.route('/ping', methods=['GET'])
 def ping():
