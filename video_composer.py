@@ -156,16 +156,17 @@ def create_product_segment_video(card_image_path, output_video_path, duration=5.
     vf = f"scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2,fade=t=in:st=0:d={fade_in},fade=t=out:st={fade_out_st}:d=0.4"
     
     cmd = [
-        ffmpeg, "-y",
+        ffmpeg, "-y", "-nostdin",
         "-loop", "1", "-i", card_image_path,
         "-f", "lavfi", "-i", "anullsrc=channel_layout=stereo:sample_rate=44100",
-        "-c:v", "libx264", "-t", str(duration), "-pix_fmt", "yuv420p", "-r", "30",
+        "-c:v", "libx264", "-preset", "ultrafast", "-threads", "2",
+        "-t", str(duration), "-pix_fmt", "yuv420p", "-r", "30",
         "-c:a", "aac", "-b:a", "128k",
         "-vf", vf,
         "-shortest",
         output_video_path
     ]
-    subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=30)
     return output_video_path
 
 def combine_gym_and_product(gym_video_path, product_segment_path, output_reel_path):
@@ -181,15 +182,15 @@ def combine_gym_and_product(gym_video_path, product_segment_path, output_reel_pa
 
         # Step 1: Standardize gym video to 1080:1920, 30 fps, 44100Hz stereo AAC
         cmd_standardize = [
-            ffmpeg, "-y",
+            ffmpeg, "-y", "-nostdin",
             "-i", gym_video_path,
             "-vf", "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2",
             "-r", "30",
-            "-c:v", "libx264", "-pix_fmt", "yuv420p",
+            "-c:v", "libx264", "-preset", "ultrafast", "-threads", "2", "-pix_fmt", "yuv420p",
             "-c:a", "aac", "-ar", "44100", "-ac", "2",
             standardized_gym
         ]
-        subprocess.run(cmd_standardize, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.run(cmd_standardize, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=45)
 
         # Step 2: Concatenate standardized gym video + product segment
         with open(concat_file, "w") as f:
@@ -197,12 +198,12 @@ def combine_gym_and_product(gym_video_path, product_segment_path, output_reel_pa
             f.write(f"file '{product_segment_path}'\n")
 
         cmd_concat = [
-            ffmpeg, "-y",
+            ffmpeg, "-y", "-nostdin",
             "-f", "concat", "-safe", "0", "-i", concat_file,
             "-c", "copy",
             output_reel_path
         ]
-        subprocess.run(cmd_concat, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        subprocess.run(cmd_concat, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=25)
         return output_reel_path
 
     finally:

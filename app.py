@@ -47,6 +47,10 @@ def check_and_publish_post(force=False, target_video_no=None):
     
     target_record = None
     
+    def is_pending(rec):
+        s = str(rec.get('Status', '')).strip().lower()
+        return s not in ('posted', 'published')
+
     # 1. Target specific video number if explicitly passed
     if target_video_no is not None:
         for record in records:
@@ -58,7 +62,7 @@ def check_and_publish_post(force=False, target_video_no=None):
     # 2. Force post next pending scheduled video
     elif force:
         for record in records:
-            if record.get('Status') == 'Scheduled':
+            if is_pending(record):
                 target_record = record
                 print(f"Force mode: selecting first unposted Video No. {record.get('Video No.')}")
                 break
@@ -68,7 +72,7 @@ def check_and_publish_post(force=False, target_video_no=None):
         # First priority: Look for post specifically scheduled for this slot (today + target_time)
         if target_time:
             for record in records:
-                if record.get('Status') == 'Scheduled' and record.get('Scheduled Date') == today_str and record.get('Scheduled Time') == target_time:
+                if is_pending(record) and record.get('Scheduled Date') == today_str and record.get('Scheduled Time') == target_time:
                     target_record = record
                     print(f"Found scheduled post for current slot ({today_str} {target_time}): Video No. {record.get('Video No.')}")
                     break
@@ -76,7 +80,7 @@ def check_and_publish_post(force=False, target_video_no=None):
         # Second priority: If no exact slot match, check if there is an overdue scheduled post (Scheduled Date + Time <= now)
         if not target_record:
             for record in records:
-                if record.get('Status') == 'Scheduled':
+                if is_pending(record):
                     rec_date = str(record.get('Scheduled Date', '')).strip()
                     rec_time = str(record.get('Scheduled Time', '')).strip()
                     try:
@@ -155,7 +159,8 @@ def check_and_publish_post(force=False, target_video_no=None):
             final_caption = affiliate_mgr.generate_affiliate_caption(caption, matched_product, hashtags)
             print("Successfully combined gym video with affiliate product card!")
         else:
-            print("Video combination failed. Falling back cleanly to original gym video.")
+            print("Video combination skipped or timed out. Falling back cleanly to original gym video.")
+            final_caption = affiliate_mgr.generate_affiliate_caption(caption, matched_product, hashtags)
     else:
         print("No high-relevance affiliate product found for this video. Publishing original gym video.")
 
