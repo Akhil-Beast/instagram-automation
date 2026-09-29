@@ -27,7 +27,24 @@
     "cta": "Tap the link in bio to lock in strict bicep isolation! 🔗",
     "badge": "💪 BICEP PEAK ISOLATION",
     "image_url": "https://m.media-amazon.com/images/I/71QHu2UJ0CL.jpg",
-    "affiliate_url": "https://www.amazon.in/dp/B07T7WWM1H?tag=akhilfinds01-21"
+    "affiliate_url": "https://www.amazon.in/dp/B07T7WWM1H?tag=akhilfinds01-21",
+    "featured_reels": [
+      {
+        "reel_no": 28,
+        "title": "Spider Curls Isolation",
+        "url": "https://www.instagram.com/reel/Dd20hpPjP7O/"
+      },
+      {
+        "reel_no": 25,
+        "title": "Cable Bicep Curls",
+        "url": "https://www.instagram.com/reel/Ddsf5jDjoTP/"
+      },
+      {
+        "reel_no": 1,
+        "title": "Preacher Curl Grind",
+        "url": "https://www.instagram.com/reel/DdODizmElza/"
+      }
+    ]
   },
   {
     "id": "lifting_straps_heavy_duty",
@@ -60,7 +77,24 @@
     "cta": "Tap the link in bio to upgrade your back day grip! 🔗",
     "badge": "⚡ ESSENTIAL PULL DAY GEAR",
     "image_url": "https://m.media-amazon.com/images/I/71QHu2UJ0CL.jpg",
-    "affiliate_url": "https://www.amazon.in/dp/B0FWKTHRL8?tag=akhilfinds01-21"
+    "affiliate_url": "https://www.amazon.in/dp/B0FWKTHRL8?tag=akhilfinds01-21",
+    "featured_reels": [
+      {
+        "reel_no": 19,
+        "title": "Seated Machine Rows",
+        "url": "https://www.instagram.com/reel/Ddkxg-AEbFt/"
+      },
+      {
+        "reel_no": 12,
+        "title": "Physique Reveal Motivation",
+        "url": "https://www.instagram.com/reel/Ddb-d2vjqem/"
+      },
+      {
+        "reel_no": 9,
+        "title": "Sculpting A Strong Back",
+        "url": "https://www.instagram.com/reel/DdX5i8gD0As/"
+      }
+    ]
   },
   {
     "id": "wrist_wraps_heavy_duty",
@@ -91,7 +125,24 @@
     "cta": "Check the link in bio to lock in your pressing power! 🔗",
     "badge": "🛡️ PUSH DAY JOINT SUPPORT",
     "image_url": "https://m.media-amazon.com/images/I/71eEXGy-IwL.jpg",
-    "affiliate_url": "https://www.amazon.in/dp/B08WLWGKY2?tag=akhilfinds01-21"
+    "affiliate_url": "https://www.amazon.in/dp/B08WLWGKY2?tag=akhilfinds01-21",
+    "featured_reels": [
+      {
+        "reel_no": 16,
+        "title": "Incline Barbell Bench Press",
+        "url": "https://www.instagram.com/reel/DdhIDdjDNym/"
+      },
+      {
+        "reel_no": 10,
+        "title": "Incline DB Press Motivation",
+        "url": "https://www.instagram.com/reel/DdZZrLlGBVF/"
+      },
+      {
+        "reel_no": 2,
+        "title": "Dynamic Pushup Variation",
+        "url": "https://www.instagram.com/reel/DdOMKMBEscf/"
+      }
+    ]
   },
   {
     "id": "knee_sleeves_7mm",
@@ -122,7 +173,19 @@
     "cta": "Hit the link in bio to protect your knees and squat heavier! 🔗",
     "badge": "🏋️‍♂️ HEAVY LEG DAY ESSENTIAL",
     "image_url": "https://m.media-amazon.com/images/I/61Fat+1k4SL.jpg",
-    "affiliate_url": "https://www.amazon.in/dp/B0B2KGKQXL?tag=akhilfinds01-21"
+    "affiliate_url": "https://www.amazon.in/dp/B0B2KGKQXL?tag=akhilfinds01-21",
+    "featured_reels": [
+      {
+        "reel_no": 14,
+        "title": "Physique Motivation & Mindset",
+        "url": "https://www.instagram.com/reel/DdejQd7FNQ3/"
+      },
+      {
+        "reel_no": 4,
+        "title": "Incline DB Press Motivation",
+        "url": "https://www.instagram.com/reel/DdS4XfRDzkw/"
+      }
+    ]
   },
   {
     "id": "lever_lifting_belt_10mm",
@@ -153,7 +216,14 @@
     "cta": "Grab the link in bio for maximum spine bracing and PRs! 🔗",
     "badge": "🏆 POWERBUILDER STANDARD",
     "image_url": "https://m.media-amazon.com/images/I/61-2Hrx3NIL.jpg",
-    "affiliate_url": "https://www.amazon.in/dp/B0G4RF1PDN?tag=akhilfinds01-21"
+    "affiliate_url": "https://www.amazon.in/dp/B0G4RF1PDN?tag=akhilfinds01-21",
+    "featured_reels": [
+      {
+        "reel_no": 5,
+        "title": "Heavy Power Motivation",
+        "url": "https://www.instagram.com/reel/DdVWyAnD7tl/"
+      }
+    ]
   },
   {
     "id": "creatine_monohydrate_micronized",
@@ -184,7 +254,24 @@
     "cta": "Hit the link in bio to fuel your daily strength and recovery! 🔗",
     "badge": "🔥 EVIDENCE-BASED GAINS",
     "image_url": "https://m.media-amazon.com/images/I/71pYCanoMhL.jpg",
-    "affiliate_url": "https://www.amazon.in/dp/B09VP6HL5J?tag=akhilfinds01-21"
+    "affiliate_url": "https://www.amazon.in/dp/B09VP6HL5J?tag=akhilfinds01-21",
+    "featured_reels": [
+      {
+        "reel_no": 22,
+        "title": "Back Muscle Growth",
+        "url": "https://www.instagram.com/reel/Ddo2cWMgNGB/"
+      },
+      {
+        "reel_no": 15,
+        "title": "Back Workout Motivation",
+        "url": "https://www.instagram.com/reel/Ddfn64aGQ1K/"
+      },
+      {
+        "reel_no": 7,
+        "title": "Fitness Progress Motivation",
+        "url": "https://www.instagram.com/reel/DdW04EHGNY2/"
+      }
+    ]
   },
   {
     "id": "stainless_steel_shaker_bottle",
@@ -213,7 +300,24 @@
     "cta": "Check the link in bio for the ultimate lump-free gym shaker! 🔗",
     "badge": "🧊 100% LEAK-PROOF SHAKER",
     "image_url": "https://m.media-amazon.com/images/I/613ADEbCVyL.jpg",
-    "affiliate_url": "https://www.amazon.in/dp/B0BBS248FD?tag=akhilfinds01-21"
+    "affiliate_url": "https://www.amazon.in/dp/B0BBS248FD?tag=akhilfinds01-21",
+    "featured_reels": [
+      {
+        "reel_no": 27,
+        "title": "Concentration Curl Focus",
+        "url": "https://www.instagram.com/reel/Dd1TS_dn5qt/"
+      },
+      {
+        "reel_no": 23,
+        "title": "Gym Motivation & Physique",
+        "url": "https://www.instagram.com/reel/Ddp7Gs3mxiS/"
+      },
+      {
+        "reel_no": 6,
+        "title": "Consistency Over Everything",
+        "url": "https://www.instagram.com/reel/DdVXmbHjcGB/"
+      }
+    ]
   },
   {
     "id": "liquid_chalk_gym",
@@ -242,7 +346,19 @@
     "cta": "Tap the link in bio to lock in a slip-free iron grip! 🔗",
     "badge": "🗜️ ANTI-SLIP CHALK FORMULA",
     "image_url": "https://m.media-amazon.com/images/I/41Gg4TRtpDL.jpg",
-    "affiliate_url": "https://www.amazon.in/dp/B0HG1QJK4Z?tag=akhilfinds01-21"
+    "affiliate_url": "https://www.amazon.in/dp/B0HG1QJK4Z?tag=akhilfinds01-21",
+    "featured_reels": [
+      {
+        "reel_no": 18,
+        "title": "Bodybuilding Mindset",
+        "url": "https://www.instagram.com/reel/Ddjs2YNE_2s/"
+      },
+      {
+        "reel_no": 8,
+        "title": "Daily Fitness Motivation",
+        "url": "https://www.instagram.com/reel/DdXaoXyG5N0/"
+      }
+    ]
   },
   {
     "id": "resistance_bands_loop_set",
@@ -272,7 +388,14 @@
     "cta": "Check the link in bio for the ultimate versatile workout bands! 🔗",
     "badge": "🛡️ WARMUP & MOBILITY GEAR",
     "image_url": "https://m.media-amazon.com/images/I/51I8Qb-CC9L.jpg",
-    "affiliate_url": "https://www.amazon.in/dp/B09G9SZYST?tag=akhilfinds01-21"
+    "affiliate_url": "https://www.amazon.in/dp/B09G9SZYST?tag=akhilfinds01-21",
+    "featured_reels": [
+      {
+        "reel_no": 2,
+        "title": "Shoulder Warmup & Mobility",
+        "url": "https://www.instagram.com/reel/DdOMKMBEscf/"
+      }
+    ]
   },
   {
     "id": "hand_grip_strengthener",
@@ -303,6 +426,18 @@
     "cta": "Check the link in bio to build thick, powerful forearms! 🔗",
     "badge": "⚡ ARMS & GRIP MULTIPLIER",
     "image_url": "https://m.media-amazon.com/images/I/71eEXGy-IwL.jpg",
-    "affiliate_url": "https://www.amazon.in/dp/B0BR3LQ4TT?tag=akhilfinds01-21"
+    "affiliate_url": "https://www.amazon.in/dp/B0BR3LQ4TT?tag=akhilfinds01-21",
+    "featured_reels": [
+      {
+        "reel_no": 26,
+        "title": "Hammer Curl Forearm Power",
+        "url": "https://www.instagram.com/reel/DduACGUk3vE/"
+      },
+      {
+        "reel_no": 20,
+        "title": "Physique Showcase",
+        "url": "https://www.instagram.com/reel/DdmRpWej9nr/"
+      }
+    ]
   }
 ]

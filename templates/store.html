@@ -403,6 +403,71 @@
       line-height: 1.2;
     }
 
+    .seen-in-reels {
+      margin-top: auto;
+      margin-bottom: 1rem;
+      background: rgba(255, 107, 0, 0.05);
+      border: 1px solid rgba(255, 107, 0, 0.2);
+      border-radius: 10px;
+      padding: 0.65rem 0.8rem;
+    }
+
+    .seen-title {
+      font-size: 0.76rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.45rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .reel-links-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+
+    .reel-pill-link {
+      background: rgba(19, 24, 36, 0.9);
+      border: 1px solid rgba(255, 107, 0, 0.35);
+      color: #e2e8f0;
+      text-decoration: none;
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 0.3rem 0.55rem;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.2s ease;
+    }
+
+    .reel-pill-link:hover {
+      background: rgba(255, 107, 0, 0.22);
+      border-color: var(--accent);
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(255, 107, 0, 0.35);
+    }
+
+    .reel-pill-link .play-icon {
+      color: var(--accent);
+      font-size: 0.7rem;
+    }
+
+    .reel-pill-link .reel-name {
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 0.72rem;
+    }
+
+    .reel-pill-link:hover .reel-name {
+      color: #cbd5e1;
+    }
+
     .btn-group {
       display: flex;
       gap: 0.6rem;
@@ -684,6 +749,19 @@
             <li><span class="check">✔</span> {{ feature }}</li>
             {% endfor %}
           </ul>
+
+          {% if product.featured_reels %}
+          <div class="seen-in-reels">
+            <div class="seen-title">🎬 As Seen in Reels:</div>
+            <div class="reel-links-list">
+              {% for reel in product.featured_reels %}
+              <a href="{{ reel.url }}" target="_blank" rel="noopener" class="reel-pill-link" title="Watch {{ reel.title }} on Instagram">
+                <span class="play-icon">▶</span> Reel #{{ reel.reel_no }} <span class="reel-name">{{ reel.title }}</span> ↗
+              </a>
+              {% endfor %}
+            </div>
+          </div>
+          {% endif %}
 
           <div class="btn-group">
             <a href="{{ product.affiliate_url }}" target="_blank" rel="noopener noreferrer sponsored" class="buy-btn">
