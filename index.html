@@ -726,7 +726,7 @@
       <div class="product-card" 
            data-category="Equipment" 
            data-name="aprodo neoprene padded heavy duty aluminum arm blaster" 
-           data-keywords="bicep biceps curls arm arms peak hypertrophy spider preacher concentration gunshow"
+           data-keywords="21s arm arms bicep biceps burnout cable concentration curls ezbar flex guns gunshow hypertrophy isolation peak preacher spider unilateral"
            data-asin="B07T7WWM1H">
         
         <div class="card-badge">💪 BICEP PEAK ISOLATION</div>
@@ -789,7 +789,7 @@
       <div class="product-card" 
            data-category="Gear & Wraps" 
            data-name="boldfit heavy duty neoprene padded weight lifting straps" 
-           data-keywords="back deadlift deadlifts rows pulldowns pull-ups lat traps shrugs pull tbar kroc grip forearms"
+           data-keywords="back chin-ups chinups deadlift deadlifts forearms grip kroc lat lats pull pull-ups pulldowns pulls pullups rackpulls rhomboids rowing rows shrugs tbar traps weighted"
            data-asin="B0FWKTHRL8">
         
         <div class="card-badge">⚡ ESSENTIAL PULL DAY GEAR</div>
@@ -852,7 +852,7 @@
       <div class="product-card" 
            data-category="Gear & Wraps" 
            data-name="boldfit heavy duty thumb loop wrist support wraps" 
-           data-keywords="bench chest press incline overhead military push shoulders dips pecs dumbbells pushup"
+           data-keywords="arnold bench chest close-grip closegrip decline diamond dips dumbbells extension extensions incline kickback kickbacks military overhead pec pecs press push pushdown pushdowns pushup shoulders skull skullcrushers tricep triceps"
            data-asin="B08WLWGKY2">
         
         <div class="card-badge">🛡️ PUSH DAY JOINT SUPPORT</div>
@@ -915,7 +915,7 @@
       <div class="product-card" 
            data-category="Gear & Wraps" 
            data-name="boldfit high compression knee support sleeves (pair)" 
-           data-keywords="squat squats leg legs quads hack lunges knee legpress calves hamstring lowerbody"
+           data-keywords="calves frontsquat goblet hack hamstring hamstrings knee leg legcurl legextension legpress legs lowerbody lunges quads shins sissy smith squat squats tibialis"
            data-asin="B0B2KGKQXL">
         
         <div class="card-badge">🏋️‍♂️ HEAVY LEG DAY ESSENTIAL</div>
@@ -974,7 +974,7 @@
       <div class="product-card" 
            data-category="Equipment" 
            data-name="beastox premium 10mm leather powerlifting lever belt" 
-           data-keywords="squat deadlift heavy powerlifting pr strength overload core spine raw max compound"
+           data-keywords="belt brace bracing chin-ups compound core deadlift dips heavy heavyweight max maximum overload powerlifting pr raw spine squat strength valsalva weighted"
            data-asin="B0G4RF1PDN">
         
         <div class="card-badge">🏆 POWERBUILDER STANDARD</div>
@@ -1029,7 +1029,7 @@
       <div class="product-card" 
            data-category="Supplements" 
            data-name="nutrabay pure micronised creatine monohydrate (100g/250g)" 
-           data-keywords="strength power energy recovery supplement hypertrophy muscle daily workout discipline gains growth"
+           data-keywords="atp brick champion daily discipline endurance energy fuel gains growth hardcore hypertrophy identity limits mass muscle nutrition outwork physique power pump recovery standards strength supplement volume workout"
            data-asin="B09VP6HL5J">
         
         <div class="card-badge">🔥 EVIDENCE-BASED GAINS</div>
@@ -1092,7 +1092,7 @@
       <div class="product-card" 
            data-category="Accessories" 
            data-name="boldfit gym shaker pro cyclone shaker bottle (500ml)" 
-           data-keywords="shaker bottle protein supplements hydration water gym workout accessories gear"
+           data-keywords="accessories bottle consistency cost critic daily dark dedication defy discipline earn evolve excuses focus gear greatness grind gym habits hungry hydration iron mindset motivation protein routine shaker shortcuts silence solitary supplements transform water workout"
            data-asin="B0BBS248FD">
         
         <div class="card-badge">🧊 100% LEAK-PROOF SHAKER</div>
@@ -1155,7 +1155,7 @@
       <div class="product-card" 
            data-category="Accessories" 
            data-name="demigrip liquid gym chalk (300ml) for deadlifts & pulls" 
-           data-keywords="chalk grip deadlift pullups climbing calisthenics heavy sweat hands barbell"
+           data-keywords="barbell bars calisthenics chalk chalked climbing deadlift deadlifting grip hands heavy pinches pullups slipping sweat traction"
            data-asin="B0HG1QJK4Z">
         
         <div class="card-badge">🗜️ ANTI-SLIP CHALK FORMULA</div>
@@ -1214,7 +1214,7 @@
       <div class="product-card" 
            data-category="Equipment" 
            data-name="fashnex exercise resistance loop bands set for gym" 
-           data-keywords="bands warmup mobility stretch shoulders rotator rehab calisthenics assisted glutes recovery"
+           data-keywords="ab activation assisted bands calisthenics cuff delts egyptian flexibility flys glutes lateral mobility obliques pulse raises recovery rehab rollout rotator shoulders sit-ups stretch twists warmup"
            data-asin="B09G9SZYST">
         
         <div class="card-badge">🛡️ WARMUP & MOBILITY GEAR</div>
@@ -1269,7 +1269,7 @@
       <div class="product-card" 
            data-category="Gear & Wraps" 
            data-name="boldfit adjustable heavy hand grip strengthener with counter" 
-           data-keywords="forearms grip bicep arm arms curls pullups barbell dumbbells thickness vascularity hands"
+           data-keywords="arm arms barbell bicep crush crusher curls dumbbells finger forearm forearms grip hand hands pinches pullups roller thickness vascularity wrist wrists zottman"
            data-asin="B0BR3LQ4TT">
         
         <div class="card-badge">⚡ ARMS & GRIP MULTIPLIER</div>
@@ -1490,6 +1490,63 @@
       setTimeout(() => {
         toast.classList.remove('show');
       }, 2500);
+    }
+
+    // Dynamic Real-Time Catalog Sync (updates newly published Reels & prices live)
+    async function syncProductsDynamically() {
+      try {
+        const endpoints = ['/api/products', 'https://instagram-automation-05bc.onrender.com/api/products'];
+        let data = null;
+        for (const ep of endpoints) {
+          try {
+            const res = await fetch(ep);
+            if (res.ok) {
+              data = await res.json();
+              if (Array.isArray(data) && data.length) break;
+            }
+          } catch(e) {}
+        }
+        if (!data || !Array.isArray(data)) return;
+
+        data.forEach(prod => {
+          const card = document.querySelector(`.product-card[data-asin="${prod.asin}"]`);
+          if (!card) return;
+
+          if (prod.price) {
+            const priceEl = card.querySelector('.price');
+            if (priceEl && priceEl.textContent.trim() !== prod.price) {
+              priceEl.textContent = prod.price;
+            }
+          }
+
+          if (prod.featured_reels && prod.featured_reels.length) {
+            let seenContainer = card.querySelector('.seen-in-reels');
+            if (!seenContainer) {
+              seenContainer = document.createElement('div');
+              seenContainer.className = 'seen-in-reels';
+              seenContainer.innerHTML = '<div class="seen-title">🎬 As Seen in Reels:</div><div class="reel-links-list"></div>';
+              const btnGroup = card.querySelector('.btn-group');
+              if (btnGroup) card.insertBefore(seenContainer, btnGroup);
+            }
+            const listEl = seenContainer.querySelector('.reel-links-list');
+            if (listEl) {
+              listEl.innerHTML = prod.featured_reels.map(r => 
+                `<a href="${r.url}" target="_blank" rel="noopener" class="reel-pill-link" title="Watch ${r.title} on Instagram">
+                  <span class="play-icon">▶</span> Reel #${r.reel_no} <span class="reel-name">${r.title}</span> ↗
+                </a>`
+              ).join('');
+            }
+          }
+        });
+      } catch(err) {
+        console.debug("Dynamic sync notice:", err);
+      }
+    }
+
+    if (window.requestIdleCallback) {
+      requestIdleCallback(syncProductsDynamically);
+    } else {
+      setTimeout(syncProductsDynamically, 1200);
     }
   </script>
 </body>

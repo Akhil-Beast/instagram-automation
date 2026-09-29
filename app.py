@@ -126,12 +126,25 @@ def check_and_publish_post(force=False, target_video_no=None):
 
     # 3. Intelligent Amazon Affiliate Product Selection & Video Composition
     affiliate_mgr = AffiliateManager()
-    recent_products = tracker.get_recent_promoted_products(limit=5)
-    matched_product = affiliate_mgr.select_product(
-        topic=topic,
-        caption=caption,
-        recent_product_ids=recent_products
-    )
+    
+    # Check if a product is already designated in the Google Sheet
+    sheet_asin = str(target_record.get('Product ASIN', '')).strip()
+    matched_product = None
+    if sheet_asin:
+        for p in affiliate_mgr.products:
+            if p.get('asin') == sheet_asin:
+                matched_product = dict(p)
+                matched_product['affiliate_url'] = affiliate_mgr.get_affiliate_url(matched_product)
+                print(f"Using pre-assigned product from Google Sheet: {matched_product.get('name')} (ASIN: {sheet_asin})")
+                break
+                
+    if not matched_product:
+        recent_products = tracker.get_recent_promoted_products(limit=5)
+        matched_product = affiliate_mgr.select_product(
+            topic=topic,
+            caption=caption,
+            recent_product_ids=recent_products
+        )
 
     publish_path = local_path
     final_caption = f"{caption}\n.\n.\n{hashtags}"
@@ -178,6 +191,55 @@ def check_and_publish_post(force=False, target_video_no=None):
                 "Instagram URL": permalink,
                 "Error": ""
             })
+
+            # Dynamically sync newly published Reel to the website storefront catalog
+            if matched_product and permalink:
+                try:
+                    catalog_path = os.path.join(os.path.dirname(__file__), 'affiliate_products.json')
+                    if os.path.exists(catalog_path):
+                        with open(catalog_path, 'r', encoding='utf-8') as f:
+                            all_prods = json.load(f)
+                        updated_cat = False
+                        for p in all_prods:
+                            if p.get('asin') == matched_product.get('asin'):
+                                if 'featured_reels' not in p:
+                                    p['featured_reels'] = []
+                                if not any(r.get('url') == permalink or r.get('reel_no') == video_no for r in p['featured_reels']):
+                                    p['featured_reels'].insert(0, {
+                                        'reel_no': video_no,
+                                        'title': topic or f"Reel #{video_no}",
+                                        'url': permalink
+                                    })
+                                    updated_cat = True
+                                break
+                        if updated_cat:
+                            with open(catalog_path, 'w', encoding='utf-8') as f:
+                                json.dump(all_prods, f, indent=2, ensure_ascii=False)
+                            print(f"Dynamically added Reel #{video_no} to {matched_product.get('name')} on the storefront website!")
+
+                            # Re-render static site files and push to GitHub/Vercel
+                            def sync_website_async():
+                                try:
+                                    from jinja2 import Environment, FileSystemLoader
+                                    import subprocess
+                                    env = Environment(loader=FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')))
+                                    tmpl = env.get_template('store.html')
+                                    rendered = tmpl.render(products=all_prods)
+                                    for fname in ['index.html', 'store.html', 'shop.html']:
+                                        fpath = os.path.join(os.path.dirname(__file__), fname)
+                                        with open(fpath, 'w', encoding='utf-8') as sf:
+                                            sf.write(rendered)
+                                    print("Re-rendered static HTML files with latest Reel links.")
+                                    subprocess.run(['git', 'add', 'affiliate_products.json', 'index.html', 'store.html', 'shop.html'], cwd=os.path.dirname(__file__), capture_output=True)
+                                    subprocess.run(['git', 'commit', '-m', f"Auto-sync Reel #{video_no} to storefront website"], cwd=os.path.dirname(__file__), capture_output=True)
+                                    subprocess.run(['git', 'push', 'origin', 'main'], cwd=os.path.dirname(__file__), capture_output=True)
+                                    print("Pushed updated website to GitHub/Vercel.")
+                                except Exception as err:
+                                    print(f"Website auto-sync notice: {err}")
+                            threading.Thread(target=sync_website_async, daemon=True).start()
+                except Exception as sync_err:
+                    print(f"Storefront sync error: {sync_err}")
+
             return {
                 "success": True,
                 "message": f"Successfully published Video No. {video_no} ({file_name}) to Instagram!",
@@ -261,6 +323,22 @@ def store():
         return render_template('store.html', products=products)
     except Exception as e:
         return f"Error loading storefront: {e}", 500
+
+@app.route('/api/products', methods=['GET'])
+def api_products():
+    """Live JSON API returning all affiliate products, prices, and featured reels"""
+    try:
+        catalog_path = os.path.join(os.path.dirname(__file__), 'affiliate_products.json')
+        if os.path.exists(catalog_path):
+            with open(catalog_path, 'r', encoding='utf-8') as f:
+                products = json.load(f)
+        else:
+            products = []
+        resp = jsonify(products)
+        resp.headers['Access-Control-Allow-Origin'] = '*'
+        return resp
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/favicon.ico')
 @app.route('/favicon.svg')

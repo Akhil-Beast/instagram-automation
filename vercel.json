@@ -2,6 +2,7 @@
   "cleanUrls": true,
   "rewrites": [
     { "source": "/store", "destination": "/index.html" },
-    { "source": "/shop", "destination": "/index.html" }
+    { "source": "/shop", "destination": "/index.html" },
+    { "source": "/api/products", "destination": "/products.json" }
   ]
 }

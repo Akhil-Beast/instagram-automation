@@ -940,6 +940,63 @@
         toast.classList.remove('show');
       }, 2500);
     }
+
+    // Dynamic Real-Time Catalog Sync (updates newly published Reels & prices live)
+    async function syncProductsDynamically() {
+      try {
+        const endpoints = ['/api/products', 'https://instagram-automation-05bc.onrender.com/api/products'];
+        let data = null;
+        for (const ep of endpoints) {
+          try {
+            const res = await fetch(ep);
+            if (res.ok) {
+              data = await res.json();
+              if (Array.isArray(data) && data.length) break;
+            }
+          } catch(e) {}
+        }
+        if (!data || !Array.isArray(data)) return;
+
+        data.forEach(prod => {
+          const card = document.querySelector(`.product-card[data-asin="${prod.asin}"]`);
+          if (!card) return;
+
+          if (prod.price) {
+            const priceEl = card.querySelector('.price');
+            if (priceEl && priceEl.textContent.trim() !== prod.price) {
+              priceEl.textContent = prod.price;
+            }
+          }
+
+          if (prod.featured_reels && prod.featured_reels.length) {
+            let seenContainer = card.querySelector('.seen-in-reels');
+            if (!seenContainer) {
+              seenContainer = document.createElement('div');
+              seenContainer.className = 'seen-in-reels';
+              seenContainer.innerHTML = '<div class="seen-title">🎬 As Seen in Reels:</div><div class="reel-links-list"></div>';
+              const btnGroup = card.querySelector('.btn-group');
+              if (btnGroup) card.insertBefore(seenContainer, btnGroup);
+            }
+            const listEl = seenContainer.querySelector('.reel-links-list');
+            if (listEl) {
+              listEl.innerHTML = prod.featured_reels.map(r => 
+                `<a href="${r.url}" target="_blank" rel="noopener" class="reel-pill-link" title="Watch ${r.title} on Instagram">
+                  <span class="play-icon">▶</span> Reel #${r.reel_no} <span class="reel-name">${r.title}</span> ↗
+                </a>`
+              ).join('');
+            }
+          }
+        });
+      } catch(err) {
+        console.debug("Dynamic sync notice:", err);
+      }
+    }
+
+    if (window.requestIdleCallback) {
+      requestIdleCallback(syncProductsDynamically);
+    } else {
+      setTimeout(syncProductsDynamically, 1200);
+    }
   </script>
 </body>
 </html>

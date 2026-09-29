@@ -89,11 +89,15 @@ class AffiliateManager:
                 best_score = score
                 best_product = product
 
-        # Minimum relevance threshold: avoid forcing irrelevant products
-        # If score is too low, we return None (publish pure gym video without product)
-        if best_score < 2.5:
-            print(f"No sufficiently relevant product found for topic '{topic}' (score: {best_score:.1f}). Skipping product insertion.")
-            return None
+        # If score is low, fall back gracefully to a non-recently promoted staple product (Shaker or Creatine)
+        if best_score < 2.0 or not best_product:
+            for fallback_prod in self.products:
+                if fallback_prod.get("id") not in recent_product_ids:
+                    best_product = fallback_prod
+                    break
+            if not best_product:
+                best_product = self.products[0]
+            print(f"Using smart staple recommendation for topic '{topic}': '{best_product['name']}'")
 
         # Return deep copy with generated affiliate link
         selected = dict(best_product)
@@ -106,21 +110,28 @@ class AffiliateManager:
         Generates an authentic, high-converting caption combining the workout advice,
         a natural product recommendation, call to action, and mandatory affiliate disclosure.
         """
+        # Clean existing affiliate section if caption already contains one
+        clean_caption = original_caption.split("⚡ Level Up Your Training:")[0].strip()
+        clean_caption = clean_caption.split("📌 Disclosure:")[0].strip()
+
         if not product:
-            return f"{original_caption}\n.\n.\n{hashtags}".strip()
+            return f"{clean_caption}\n.\n.\n{hashtags}".strip()
 
         prod_name = product.get("name", "")
-        cta = product.get("cta", "Link in bio to check it out! 🔗")
+        cta = product.get("cta", "Tap the link in bio to upgrade your gym setup! 🔗")
         category = product.get("category", "Workout Gear")
         features = product.get("features", [])
+        store_url = os.getenv("STORE_URL", "https://gym147boy-store.vercel.app")
         
         feature_str = f" ({features[0]})" if features else ""
 
         affiliate_section = (
             f"\n\n⚡ Level Up Your Training:\n"
-            f"Equip yourself with the {prod_name}{feature_str}. {cta}\n\n"
-            f"📌 Disclosure: Some links may be affiliate links. As an Amazon Associate, I earn from qualifying purchases at no extra cost to you."
+            f"Equip yourself with the {prod_name}{feature_str}.\n"
+            f"{cta}\n"
+            f"👉 Official Store in Bio: {store_url}\n\n"
+            f"📌 Disclosure: As an Amazon Associate, I earn from qualifying purchases at no extra cost to you."
         )
 
-        full_caption = f"{original_caption}{affiliate_section}\n.\n.\n{hashtags}".strip()
+        full_caption = f"{clean_caption}{affiliate_section}\n.\n.\n{hashtags}".strip()
         return full_caption

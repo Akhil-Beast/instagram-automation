@@ -156,3 +156,18 @@ class Tracker:
         self.sheet.append_row(video_data)
         print(f"Added {video_data[1]} to tracker.")
 
+    def batch_update_range(self, range_name, values):
+        """
+        Updates a rectangular range in Google Sheet in a single API call.
+        e.g. range_name='A30:Q198', values=[[...], [...]]
+        """
+        if not self.sheet:
+            return False
+        try:
+            self.sheet.update(range_name=range_name, values=values)
+            print(f"[Tracker] Successfully batch-updated range {range_name} ({len(values)} rows).")
+            return True
+        except Exception as e:
+            print(f"[Tracker] Error in batch update {range_name}: {e}")
+            return False
+
