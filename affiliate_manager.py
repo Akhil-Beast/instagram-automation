@@ -78,26 +78,36 @@ class AffiliateManager:
             overlap = tokens.intersection(name_tokens)
             score += len(overlap) * 1.5
 
+            # Priority boost for Gym Whey Protein & Organic Moringa Powder
+            if product.get("priority"):
+                score += product.get("priority_bonus", 8.0)
+
             # Apply rotation penalty if recently used
             if prod_id in recent_product_ids:
                 recency_index = recent_product_ids.index(prod_id)
                 # Stronger penalty if promoted very recently (e.g. within last 3 posts)
-                penalty = max(1.0, 6.0 - recency_index)
+                penalty = max(2.0, 7.0 - recency_index)
                 score -= penalty
 
             if score > best_score:
                 best_score = score
                 best_product = product
 
-        # If score is low, fall back gracefully to a non-recently promoted staple product (Shaker or Creatine)
-        if best_score < 2.0 or not best_product:
-            for fallback_prod in self.products:
-                if fallback_prod.get("id") not in recent_product_ids:
-                    best_product = fallback_prod
+        # If score is low or generic topic, rotate prioritized health/gym powders first
+        if best_score < 5.0 or not best_product:
+            priority_prods = [p for p in self.products if p.get("priority")]
+            for p in priority_prods:
+                if p.get("id") not in recent_product_ids:
+                    best_product = p
                     break
             if not best_product:
+                for fallback_prod in self.products:
+                    if fallback_prod.get("id") not in recent_product_ids:
+                        best_product = fallback_prod
+                        break
+            if not best_product:
                 best_product = self.products[0]
-            print(f"Using smart staple recommendation for topic '{topic}': '{best_product['name']}'")
+            print(f"Using prioritized gym/moringa powder staple for topic '{topic}': '{best_product['name']}'")
 
         # Return deep copy with generated affiliate link
         selected = dict(best_product)
@@ -113,6 +123,9 @@ class AffiliateManager:
         # Clean existing affiliate section if caption already contains one
         clean_caption = original_caption.split("⚡ Level Up Your Training:")[0].strip()
         clean_caption = clean_caption.split("📌 Disclosure:")[0].strip()
+        if hashtags and hashtags.strip() in clean_caption:
+            clean_caption = clean_caption.replace(hashtags.strip(), "").strip()
+        clean_caption = re.sub(r'(\n\s*\.\s*)+\n*$', '', clean_caption).strip()
 
         if not product:
             return f"{clean_caption}\n.\n.\n{hashtags}".strip()

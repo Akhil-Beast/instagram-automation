@@ -726,7 +726,7 @@
       </div>
 
       <div class="filter-pills" id="categoryPills">
-        <button class="filter-pill active" data-category="all">All Products (<span id="count-all">10</span>)</button>
+        <button class="filter-pill active" data-category="all">All Products (<span id="count-all">{{ products|length }}</span>)</button>
         <button class="filter-pill" data-category="Gear & Wraps">Gear & Wraps</button>
         <button class="filter-pill" data-category="Equipment">Equipment</button>
         <button class="filter-pill" data-category="Supplements">Supplements</button>
@@ -736,7 +736,7 @@
 
     <!-- Status Bar -->
     <div class="status-bar">
-      <div id="resultsCount">Showing all 10 products</div>
+      <div id="resultsCount">Showing all {{ products|length }} products</div>
       <div style="color: var(--accent); font-weight: 600;">⚡ Direct Amazon India Links</div>
     </div>
 
