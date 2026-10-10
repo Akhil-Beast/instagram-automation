@@ -721,16 +721,16 @@
     <div class="controls-wrapper">
       <div class="search-box">
         <span class="search-icon">🔍</span>
-        <input type="text" id="searchInput" placeholder="Search gear (e.g. bicep, wrist wraps, straps, creatine, belt)..." autocomplete="off">
+        <input type="text" id="searchInput" placeholder="Search 50+ gym products (e.g. whey, creatine, belt, gloves, dumbbells)..." autocomplete="off">
         <button id="clearSearch" class="clear-btn" title="Clear search">✕</button>
       </div>
 
       <div class="filter-pills" id="categoryPills">
         <button class="filter-pill active" data-category="all">All Products (<span id="count-all">{{ products|length }}</span>)</button>
-        <button class="filter-pill" data-category="Gear & Wraps">Gear & Wraps</button>
-        <button class="filter-pill" data-category="Equipment">Equipment</button>
-        <button class="filter-pill" data-category="Supplements">Supplements</button>
-        <button class="filter-pill" data-category="Accessories">Accessories</button>
+        <button class="filter-pill" data-category="Gear & Wraps">Gear & Wraps ({{ products|selectattr('category', 'equalto', 'Gear & Wraps')|list|length }})</button>
+        <button class="filter-pill" data-category="Equipment">Equipment ({{ products|selectattr('category', 'equalto', 'Equipment')|list|length }})</button>
+        <button class="filter-pill" data-category="Supplements">Supplements ({{ products|selectattr('category', 'equalto', 'Supplements')|list|length }})</button>
+        <button class="filter-pill" data-category="Accessories">Accessories ({{ products|selectattr('category', 'equalto', 'Accessories')|list|length }})</button>
       </div>
     </div>
 
@@ -805,7 +805,7 @@
     <!-- Empty Search State -->
     <div class="empty-state" id="emptyState">
       <h3>No matching fitness gear found</h3>
-      <p>Try searching for "bicep", "straps", "creatine", "wraps", or click "All Products".</p>
+      <p>Try searching for "whey", "creatine", "belt", "gloves", "shaker", or click "All Products".</p>
     </div>
 
     <!-- As Seen in Reels Section -->
