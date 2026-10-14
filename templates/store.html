@@ -721,22 +721,22 @@
     <div class="controls-wrapper">
       <div class="search-box">
         <span class="search-icon">🔍</span>
-        <input type="text" id="searchInput" placeholder="Search 50+ gym products (e.g. whey, creatine, belt, gloves, dumbbells)..." autocomplete="off">
+        <input type="text" id="searchInput" placeholder="Search gear, supplements, equipment, machines (e.g. whey, belt, barbell, treadmill)..." autocomplete="off">
         <button id="clearSearch" class="clear-btn" title="Clear search">✕</button>
       </div>
 
       <div class="filter-pills" id="categoryPills">
-        <button class="filter-pill active" data-category="all">All Products (<span id="count-all">{{ products|length }}</span>)</button>
-        <button class="filter-pill" data-category="Gear & Wraps">Gear & Wraps ({{ products|selectattr('category', 'equalto', 'Gear & Wraps')|list|length }})</button>
-        <button class="filter-pill" data-category="Equipment">Equipment ({{ products|selectattr('category', 'equalto', 'Equipment')|list|length }})</button>
-        <button class="filter-pill" data-category="Supplements">Supplements ({{ products|selectattr('category', 'equalto', 'Supplements')|list|length }})</button>
-        <button class="filter-pill" data-category="Accessories">Accessories ({{ products|selectattr('category', 'equalto', 'Accessories')|list|length }})</button>
+        <button class="filter-pill active" data-category="all">All Products</button>
+        <button class="filter-pill" data-category="Gear & Wraps">Gear & Wraps</button>
+        <button class="filter-pill" data-category="Equipment">Equipment</button>
+        <button class="filter-pill" data-category="Supplements">Supplements</button>
+        <button class="filter-pill" data-category="Accessories">Accessories</button>
       </div>
     </div>
 
     <!-- Status Bar -->
     <div class="status-bar">
-      <div id="resultsCount">Showing all {{ products|length }} products</div>
+      <div id="resultsCount">Curated Fitness Collection</div>
       <div style="color: var(--accent); font-weight: 600;">⚡ Direct Amazon India Links</div>
     </div>
 
@@ -917,13 +917,13 @@
         }
       });
 
-      // Update count & empty state
+      // Update empty state & status bar without displaying counts
       if (visibleCount === 0) {
         emptyState.style.display = 'block';
-        resultsCount.textContent = 'No products found';
+        resultsCount.textContent = 'No matching products found';
       } else {
         emptyState.style.display = 'none';
-        resultsCount.textContent = `Showing ${visibleCount} of ${productCards.length} products`;
+        resultsCount.textContent = 'Curated Fitness Collection';
       }
     }
 
