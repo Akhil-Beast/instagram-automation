@@ -108,10 +108,11 @@ def analyze_and_schedule_all(batch_limit=None):
 
     print("\nBatch analysis complete! Check your Google Sheet to view the schedule.")
 
-def check_and_publish():
+def check_and_publish(force=False):
     """
     Checks the Google Sheet for any post scheduled for today and the current time slot,
     and publishes it to Instagram Reels.
+    If force=True, publishes the next pending scheduled post immediately without checking the hour.
     """
     now = datetime.datetime.now()
     current_time_str = now.strftime("%Y-%m-%d %H:%M:%S")
@@ -133,48 +134,59 @@ def check_and_publish():
     elif 23 <= current_hour <= 23:
         target_time = "11:00 PM"
     
-    if not target_time:
+    if not force and not target_time:
         print(f"Current hour is {current_hour}:00. Next posting window is at 09:00 AM or 11:00 PM.")
+        print("Note: To post the next pending reel immediately right now, run: python main.py --post-now")
         return
         
     for record in records:
-        if record.get('Scheduled Date') == today_str and record.get('Scheduled Time') == target_time:
+        is_candidate = False
+        if force:
             if record.get('Status') == 'Scheduled':
-                video_file_name = record.get('File Name')
-                video_no = record.get('Video No.')
-                
-                # Locate video in folder
-                file_path = os.path.join(VIDEO_FOLDER, video_file_name)
-                if not os.path.exists(file_path):
-                    # Also check with possible whitespace
-                    matches = glob.glob(os.path.join(VIDEO_FOLDER, f"*{video_file_name}*"))
-                    if matches:
-                        file_path = matches[0]
-                    else:
-                        print(f"Error: Video file not found on disk: {video_file_name}")
-                        tracker.update_status(video_no, "Failed (File Not Found)")
-                        continue
-                        
-                caption = str(record.get('Caption', ''))
-                hashtags = str(record.get('Hashtags', ''))
-                full_caption = f"{caption}\n.\n.\n{hashtags}"
-                
-                print(f"\n=======================================================")
-                print(f"Publishing Video No. {video_no}: {video_file_name}")
-                print(f"Target slot: {today_str} {target_time}")
-                print(f"Caption:\n{full_caption}")
-                print(f"=======================================================")
-                
-                success = publisher.publish_video(file_path, full_caption)
-                if success:
-                    tracker.update_status(video_no, "Posted")
-                    print(f"Video No. {video_no} successfully posted to Instagram!")
-                else:
-                    tracker.update_status(video_no, "Failed")
-                    print(f"Video No. {video_no} failed to post.")
-                return
+                is_candidate = True
+        else:
+            if record.get('Scheduled Date') == today_str and record.get('Scheduled Time') == target_time:
+                if record.get('Status') == 'Scheduled':
+                    is_candidate = True
 
-    print(f"No pending posts found for {today_str} {target_time}.")
+        if is_candidate:
+            video_file_name = record.get('File Name')
+            video_no = record.get('Video No.')
+            
+            # Locate video in folder
+            file_path = os.path.join(VIDEO_FOLDER, video_file_name)
+            if not os.path.exists(file_path):
+                # Also check with possible whitespace
+                matches = glob.glob(os.path.join(VIDEO_FOLDER, f"*{video_file_name}*"))
+                if matches:
+                    file_path = matches[0]
+                else:
+                    print(f"Error: Video file not found on disk: {video_file_name}")
+                    tracker.update_status(video_no, "Failed (File Not Found)")
+                    continue
+                    
+            caption = str(record.get('Caption', ''))
+            hashtags = str(record.get('Hashtags', ''))
+            full_caption = f"{caption}\n.\n.\n{hashtags}"
+            
+            print(f"\n=======================================================")
+            print(f"Publishing Video No. {video_no}: {video_file_name}")
+            print(f"Target slot: {today_str} (Force: {force})")
+            print(f"Caption:\n{full_caption[:120]}...")
+            print(f"=======================================================")
+            
+            result = publisher.publish_video(file_path, full_caption)
+            if result:
+                post_id = result.get('post_id', '') if isinstance(result, dict) else ''
+                permalink = result.get('permalink', '') if isinstance(result, dict) else ''
+                tracker.update_status(video_no, "Posted", reel_id=post_id, url=permalink)
+                print(f"Video No. {video_no} successfully posted to Instagram!")
+            else:
+                tracker.update_status(video_no, "Failed")
+                print(f"Video No. {video_no} failed to post.")
+            return
+
+    print(f"No pending posts found to publish.")
 
 def run_scheduler():
     """Starts the continuous background scheduler"""
@@ -202,7 +214,7 @@ if __name__ == "__main__":
         analyze_and_schedule_all(batch_limit=limit)
     elif len(sys.argv) > 1 and sys.argv[1] == "--post-now":
         # Immediate manual trigger for test post
-        check_and_publish()
+        check_and_publish(force=True)
     else:
         # Default behavior: Prompt or run
         print("Instagram Automation System")
